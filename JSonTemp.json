@@ -1,0 +1,59 @@
+RECEIVED: urn:x-cast:com.google.cast.receiver : {
+  "requestId": 0,
+  "status": {
+    "applications": [
+      {
+        "appId": "CC1AD845",
+        "displayName": "Default Media Receiver",
+        "iconUrl": "",
+        "isIdleScreen": false,
+        "launchedFromCloud": false,
+        "namespaces": [
+          { "name": "urn:x-cast:com.google.cast.cac" },
+          { "name": "urn:x-cast:com.google.cast.broadcast" },
+          { "name": "urn:x-cast:com.google.cast.media" }
+        ],
+        "sessionId": "17a74c5e-8095-4d52-9016-a91c4662d735",
+        "statusText": "Default Media Receiver",
+        "transportId": "17a74c5e-8095-4d52-9016-a91c4662d735"
+      }
+    ],
+    "userEq": {},
+    "volume": {
+      "controlType": "attenuation",
+      "level": 0.0,
+      "muted": false,
+      "stepInterval": 0.05000000074505806
+    }
+  },
+  "type": "RECEIVER_STATUS"
+} RECEIVED: urn:x-cast:com.google.cast.receiver : {
+  "requestId": 0,
+  "status": {
+    "applications": [
+      {
+        "appId": "CC1AD845",
+        "displayName": "Default Media Receiver",
+        "iconUrl": "",
+        "isIdleScreen": false,
+        "launchedFromCloud": false,
+        "namespaces": [
+          { "name": "urn:x-cast:com.google.cast.cac" },
+          { "name": "urn:x-cast:com.google.cast.broadcast" },
+          { "name": "urn:x-cast:com.google.cast.media" }
+        ],
+        "sessionId": "17a74c5e-8095-4d52-9016-a91c4662d735",
+        "statusText": "Casting: 2_2018-09-09_15-59-10",
+        "transportId": "17a74c5e-8095-4d52-9016-a91c4662d735"
+      }
+    ],
+    "userEq": {},
+    "volume": {
+      "controlType": "attenuation",
+      "level": 0.0,
+      "muted": false,
+      "stepInterval": 0.05000000074505806
+    }
+  },
+  "type": "RECEIVER_STATUS"
+}

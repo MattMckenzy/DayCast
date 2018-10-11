@@ -1,0 +1,2221 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GoogleCast</name>
+    </assembly>
+    <members>
+        <member name="T:GoogleCast.CastMessage">
+            <summary>
+            Cast message
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.ProtocolVersion">
+            <summary>
+            Gets or sets the protocol version
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.SourceId">
+            <summary>
+            Gets or sets the source identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.DestinationId">
+            <summary>
+            Gets or sets the destination identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.Namespace">
+            <summary>
+            Gets or sets the namespace
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.PayloadType">
+            <summary>
+            Gets or sets the payload type
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.PayloadUtf8">
+            <summary>
+            Gets or sets the UTF-8 payload
+            </summary>
+        </member>
+        <member name="P:GoogleCast.CastMessage.PayloadBinary">
+            <summary>
+            Gets or sets the binary payload
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Channels.Channel">
+            <summary>
+            Channel base class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.Channel.#ctor">
+            <summary>
+            Initialization
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.Channel.#ctor(System.String)">
+            <summary>
+            Initialization
+            </summary>
+            <param name="ns">namespace</param>
+        </member>
+        <member name="P:GoogleCast.Channels.Channel.Sender">
+            <summary>
+            Gets or sets the sender
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.Channel.Namespace">
+            <summary>
+            Gets the full namespace
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.Channel.SendAsync(GoogleCast.Messages.IMessage,System.String)">
+            <summary>
+            Sends a message
+            </summary>
+            <param name="message">message to send</param>
+            <param name="destinationId">destination identifier</param>
+        </member>
+        <member name="M:GoogleCast.Channels.Channel.SendAsync``1(GoogleCast.Messages.IMessageWithId,System.String)">
+            <summary>
+            Sends a message and waits the result
+            </summary>
+            <typeparam name="TResponse">response type</typeparam>
+            <param name="message">message to send</param>
+            <param name="destinationId">destination identifier</param>
+            <returns>the result</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.Channel.OnMessageReceivedAsync(GoogleCast.Messages.IMessage)">
+            <summary>
+            Called when a message for this channel is received
+            </summary>
+            <param name="message">message to process</param>
+        </member>
+        <member name="T:GoogleCast.Channels.ConnectionChannel">
+            <summary>
+            Connection channel
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.ConnectionChannel.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Channels.ConnectionChannel"/> class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.ConnectionChannel.ConnectAsync(System.String)">
+            <summary>
+            Connects 
+            </summary>
+            <param name="destinationId">destination identifier</param>
+        </member>
+        <member name="M:GoogleCast.Channels.ConnectionChannel.OnMessageReceivedAsync(GoogleCast.Messages.IMessage)">
+            <summary>
+            Called when a message for this channel is received
+            </summary>
+            <param name="message">message to process</param>
+        </member>
+        <member name="T:GoogleCast.Channels.HeartbeatChannel">
+            <summary>
+            Heartbeat channel
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.HeartbeatChannel.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Channels.HeartbeatChannel"/> class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.HeartbeatChannel.OnMessageReceivedAsync(GoogleCast.Messages.IMessage)">
+            <summary>
+            Called when a message for this channel is received
+            </summary>
+            <param name="message">message to process</param>
+        </member>
+        <member name="T:GoogleCast.Channels.IApplicationChannel">
+            <summary>
+            Interface for application channels
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.IApplicationChannel.ApplicationId">
+            <summary>
+            Gets the application identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Channels.IChannel">
+            <summary>
+            Interface for a channel
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.IChannel.Sender">
+            <summary>
+            Gets or sets the sender
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.IChannel.Namespace">
+            <summary>
+            Gets the full namespace
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.IChannel.OnMessageReceivedAsync(GoogleCast.Messages.IMessage)">
+            <summary>
+            Called when a message for this channel is received
+            </summary>
+            <param name="message">message to process</param>
+        </member>
+        <member name="T:GoogleCast.Channels.IConnectionChannel">
+            <summary>
+            Interface for the connection channel
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.IConnectionChannel.ConnectAsync(System.String)">
+            <summary>
+            Connects 
+            </summary>
+            <param name="destinationId">destination identifier</param>
+        </member>
+        <member name="T:GoogleCast.Channels.IHeartbeatChannel">
+            <summary>
+            Interface for the heartbeat channel
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Channels.IMediaChannel">
+            <summary>
+            Interface for the media channel
+            </summary>
+        </member>
+        <member name="E:GoogleCast.Channels.IMediaChannel.QueueStatusChanged">
+            <summary>
+            Raised when the status has changed
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.IMediaChannel.QueueStatus">
+            <summary>
+            Gets the status
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.GetStatusAsync">
+            <summary>
+            Retrieves the media status
+            </summary>
+            <returns>the media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.LoadAsync(GoogleCast.Models.Media.MediaInformation,System.Boolean,System.Int32[])">
+            <summary>
+            Loads a media
+            </summary>
+            <param name="media">media to load</param>
+            <param name="autoPlay">true to play the media directly, false otherwise</param>
+            <param name="activeTrackIds">tracks identifiers that should be active</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueLoadAsync(GoogleCast.Models.Media.RepeatMode,GoogleCast.Models.Media.MediaInformation[])">
+            <summary>
+            Loads a queue items
+            </summary>
+            <param name="repeatMode">queue repeat mode</param>
+            <param name="medias">media items</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueLoadAsync(GoogleCast.Models.Media.RepeatMode,GoogleCast.Models.Media.QueueItem[])">
+            <summary>
+            Loads a queue items
+            </summary>
+            <param name="repeatMode">queue repeat mode</param>
+            <param name="queueItems">items to load</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueInsertAsync(GoogleCast.Models.Media.QueueItem[])">
+            <summary>
+            Inserts queue items into the queue
+            </summary>
+            <param name="queueItems">items to insert</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueRemoveAsync(System.Int32[])">
+            <summary>
+            Removes queue items from the queue
+            </summary>
+            <param name="queueItemIds">item ids to remove</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueUpdateAsync(System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+            <summary>
+            Updates the queue with new currently playing media and shuffle
+            </summary>
+            <param name="currentItemId">item id to set currently playing media</param>
+            <param name="shuffle">bool </param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueReorderAsync(System.Int32[])">
+            <summary>
+            Reorders queue items in the queue
+            </summary>
+            <param name="queueItemIds">item ids to reorder</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueGetItemsMessage(System.Int32[])">
+            <summary>
+            Get the given item ids' info
+            </summary>
+            <param name="itemIds">item ids to retrieve info</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.QueueGetItemIdsMessage">
+            <summary>
+            Get all currently queued item ids
+            </summary>
+            <returns>int array</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.EditTracksInfoAsync(System.String,System.Boolean,System.Int32[])">
+            <summary>
+            Edits tracks info
+            </summary>
+            <param name="enabledTextTracks">true to enable text tracks, false otherwise</param>
+            <param name="language">language for the tracks that should be active</param>
+            <param name="activeTrackIds">track identifiers that should be active</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.PlayAsync">
+            <summary>
+            Plays the media
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.PauseAsync">
+            <summary>
+            Pauses the media
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.StopAsync">
+            <summary>
+            Stops the media
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.SeekAsync(System.Double)">
+            <summary>
+            Seeks to the specified time
+            </summary>
+            <param name="seconds">time in seconds</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.SetPlaybackRateMessage(System.Double)">
+            <summary>
+            Sets the current playback rate of the stream
+            </summary>
+            <param name="playbackRate">playback rate</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.NextAsync">
+            <summary>
+            Skips to the next media in the queue
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IMediaChannel.PreviousAsync">
+            <summary>
+            Skips to the previous media in the queue
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="T:GoogleCast.Channels.IReceiverChannel">
+            <summary>
+            Interface for the receiver channel
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.IReceiverChannel.GetStatusAsync">
+            <summary>
+            Retrieves the status
+            </summary>
+            <returns>the status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IReceiverChannel.LaunchAsync(System.String)">
+            <summary>
+            Launches an application
+            </summary>
+            <param name="applicationId">application identifier</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IReceiverChannel.EnsureConnectionAsync(System.String)">
+            <summary>
+            Checks the connection is well established
+            </summary>
+            <param name="ns">namespace</param>
+            <returns>an application object</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IReceiverChannel.SetVolumeAsync(System.Single)">
+            <summary>
+            Sets the volume
+            </summary>
+            <param name="level">volume level (0.0 to 1.0)</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IReceiverChannel.SetIsMutedAsync(System.Boolean)">
+            <summary>
+            Sets a value indicating whether the audio should be muted
+            </summary>
+            <param name="isMuted">true if audio should be muted; otherwise, false</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.IReceiverChannel.StopAsync(GoogleCast.Models.Receiver.Application[])">
+            <summary>
+            Stops the current applications
+            </summary>
+            <param name="applications">applications to stop</param>
+            <returns>ReceiverStatus</returns>
+        </member>
+        <member name="T:GoogleCast.Channels.IStatusChannel`1">
+            <summary>
+            Interface for a status channel
+            </summary>
+            <typeparam name="TStatus">status type</typeparam>
+        </member>
+        <member name="E:GoogleCast.Channels.IStatusChannel`1.StatusChanged">
+            <summary>
+            Raised when the status has changed
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.IStatusChannel`1.Status">
+            <summary>
+            Gets the status
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Channels.MediaChannel">
+            <summary>
+            Media channel
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Channels.MediaChannel"/> class
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.MediaChannel.ApplicationId">
+            <summary>
+            Gets the application identifier
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.GetStatusAsync">
+            <summary>
+            Retrieves the status
+            </summary>
+            <returns>the status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.LoadAsync(GoogleCast.Models.Media.MediaInformation,System.Boolean,System.Int32[])">
+            <summary>
+            Loads a media
+            </summary>
+            <param name="media">media to load</param>
+            <param name="autoPlay">true to play the media directly, false otherwise</param>
+            <param name="activeTrackIds">track identifiers that should be active</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueLoadAsync(GoogleCast.Models.Media.RepeatMode,GoogleCast.Models.Media.MediaInformation[])">
+            <summary>
+            Loads a queue items
+            </summary>
+            <param name="repeatMode">queue repeat mode</param>
+            <param name="medias">media items</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueLoadAsync(GoogleCast.Models.Media.RepeatMode,GoogleCast.Models.Media.QueueItem[])">
+            <summary>
+            Loads a queue items
+            </summary>
+            <param name="repeatMode">queue repeat mode</param>
+            <param name="queueItems">items to load</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueLoadAsync(GoogleCast.Models.Media.RepeatMode,System.Collections.Generic.IEnumerable{GoogleCast.Models.Media.QueueItem})">
+            <summary>
+            Loads a queue items
+            </summary>
+            <param name="repeatMode">queue repeat mode</param>
+            <param name="queueItems">items to load</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueInsertAsync(GoogleCast.Models.Media.QueueItem[])">
+            <summary>
+            Inserts queue items into the queue
+            </summary>
+            <param name="queueItems">items to insert</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueRemoveAsync(System.Int32[])">
+            <summary>
+            Removes queue items from the queue
+            </summary>
+            <param name="queueItemIds">item ids to remove</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueUpdateAsync(System.Nullable{System.Int32},System.Nullable{System.Boolean})">
+            <summary>
+            Updates the queue with new currently playing media and shuffle
+            </summary>
+            <param name="currentItemId">item id to set currently playing media</param>
+            <param name="shuffle">bool </param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueReorderAsync(System.Int32[])">
+            <summary>
+            Reorder queue items in the queue
+            </summary>
+            <param name="queueItemIds">item ids to reorder</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueGetItemsMessage(System.Int32[])">
+            <summary>
+            Get the given item ids' info
+            </summary>
+            <param name="itemIds">item ids to retrieve info</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.QueueGetItemIdsMessage">
+            <summary>
+            Get all currently queued item ids
+            </summary>
+            <returns>int array</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.EditTracksInfoAsync(System.String,System.Boolean,System.Int32[])">
+            <summary>
+            Edits tracks info
+            </summary>
+            <param name="enabledTextTracks">true to enable text tracks, false otherwise</param>
+            <param name="language">language for the tracks that should be active</param>
+            <param name="activeTrackIds">track identifiers that should be active</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.PlayAsync">
+            <summary>
+            Plays the media
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.PauseAsync">
+            <summary>
+            Pauses the media
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.StopAsync">
+            <summary>
+            Stops the media
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.SeekAsync(System.Double)">
+            <summary>
+            Seeks to the specified time
+            </summary>
+            <param name="seconds">time in seconds</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.SetPlaybackRateMessage(System.Double)">
+            <summary>
+            Sets the current playback rate of the stream
+            </summary>
+            <param name="playbackRate">playback rate</param>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.NextAsync">
+            <summary>
+            Skips to the next media in the queue
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.PreviousAsync">
+            <summary>
+            Skips to the previous media in the queue
+            </summary>
+            <returns>media status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.MediaChannel.OnMessageReceivedAsync(GoogleCast.Messages.IMessage)">
+            <summary>
+            Called when a message for this channel is received
+            </summary>
+            <param name="message">message to process</param>
+        </member>
+        <member name="T:GoogleCast.Channels.ReceiverChannel">
+            <summary>
+            Receiver channel
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Channels.ReceiverChannel"/> class
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Channels.ReceiverChannel.Sender">
+            <summary>
+            Gets or sets the sender
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.LaunchAsync(System.String)">
+            <summary>
+            Launches an application
+            </summary>
+            <param name="applicationId">application identifier</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.SetVolumeAsync(System.Single)">
+            <summary>
+            Sets the volume
+            </summary>
+            <param name="level">volume level (0.0 to 1.0)</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.SetIsMutedAsync(System.Boolean)">
+            <summary>
+            Sets a value indicating whether the audio should be muted
+            </summary>
+            <param name="isMuted">true if audio should be muted; otherwise, false</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.EnsureConnectionAsync(System.String)">
+            <summary>
+            Checks the connection is well established
+            </summary>
+            <param name="ns">namespace</param>
+            <returns>an application object</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.StopAsync(GoogleCast.Models.Receiver.Application[])">
+            <summary>
+            Stops the current applications
+            </summary>
+            <param name="applications">applications to stop</param>
+            <returns>ReceiverStatus</returns>
+        </member>
+        <member name="M:GoogleCast.Channels.ReceiverChannel.GetStatusAsync">
+            <summary>
+            Retrieves the status
+            </summary>
+            <returns>the status</returns>
+        </member>
+        <member name="T:GoogleCast.Channels.StatusChannel`2">
+            <summary>
+            Base class for status channels
+            </summary>
+            <typeparam name="TStatus">status type</typeparam>
+            <typeparam name="TStatusMessage">status message type</typeparam>
+        </member>
+        <member name="E:GoogleCast.Channels.StatusChannel`2.StatusChanged">
+            <summary>
+            Raised when the status has changed
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.StatusChannel`2.#ctor(System.String)">
+            <summary>
+            Initialization
+            </summary>
+            <param name="ns">namespace</param>
+        </member>
+        <member name="P:GoogleCast.Channels.StatusChannel`2.Status">
+            <summary>
+            Gets or sets the status
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Channels.StatusChannel`2.OnMessageReceivedAsync(GoogleCast.Messages.IMessage)">
+            <summary>
+            Called when a message for this channel is received
+            </summary>
+            <param name="message">message to process</param>
+        </member>
+        <member name="M:GoogleCast.Channels.StatusChannel`2.OnStatusChanged">
+            <summary>
+            Raises the StatusChanged event
+            </summary>
+        </member>
+        <member name="T:GoogleCast.ColorHelper">
+            <summary>
+            Helper for <see cref="T:System.Drawing.Color"/> class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.ColorHelper.FromHexString(System.String)">
+            <summary>
+            Converts a string to a <see cref="T:System.Drawing.Color"/>
+            </summary>
+            <param name="color">color string to convert</param>
+            <returns>the color object</returns>
+        </member>
+        <member name="M:GoogleCast.ColorHelper.FromNullableHexString(System.String)">
+            <summary>
+            Converts a string to a nullable <see cref="T:System.Drawing.Color"/>
+            </summary>
+            <param name="color">color string to convert</param>
+            <returns>the nullable color object</returns>
+        </member>
+        <member name="M:GoogleCast.ColorHelper.ToHexString(System.Drawing.Color)">
+            <summary>
+            Converts a color to an hexadecimal string (#RRGGBBAA)
+            </summary>
+            <param name="color">color to convert</param>
+            <returns>the hexadecimal string</returns>
+        </member>
+        <member name="M:GoogleCast.ColorHelper.ToHexString(System.Nullable{System.Drawing.Color})">
+            <summary>
+            Converts a nullable color to an hexadecimal string (#RRGGBBAA)
+            </summary>
+            <param name="color">nullable color to convert</param>
+            <returns>the hexadecimal string</returns>
+        </member>
+        <member name="T:GoogleCast.DefaultIdentifiers">
+            <summary>
+            Default identifiers
+            </summary>
+        </member>
+        <member name="F:GoogleCast.DefaultIdentifiers.SENDER_ID">
+            <summary>
+            Default sender identifier
+            </summary>
+        </member>
+        <member name="F:GoogleCast.DefaultIdentifiers.DESTINATION_ID">
+            <summary>
+            Default destination identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.DeviceLocator">
+            <summary>
+            Device locator
+            </summary>
+        </member>
+        <member name="M:GoogleCast.DeviceLocator.FindReceiversAsync">
+            <summary>
+            Finds the available receivers
+            </summary>
+            <returns>a collection of receivers</returns>
+        </member>
+        <member name="M:GoogleCast.DeviceLocator.FindReceiversContinuous">
+            <summary>
+            Finds the available receivers in continuous way
+            </summary>
+            <returns>a provider for notifications</returns>
+        </member>
+        <member name="T:GoogleCast.EnumHelper">
+            <summary>
+            Helper for <see cref="T:System.Enum"/>
+            </summary>
+        </member>
+        <member name="M:GoogleCast.EnumHelper.Parse``1(System.String)">
+            <summary>
+            Converts the string representation of the name of an enumerated constant to an equivalent enumerated object
+            </summary>
+            <typeparam name="T">an enumeration type</typeparam>
+            <param name="enumString">a string containing the name to convert</param>
+            <returns>an object of type T whose value is represented by enumString</returns>
+        </member>
+        <member name="M:GoogleCast.EnumHelper.ParseNullable``1(System.String)">
+            <summary>
+            Converts the nullable string representation of the name of an enumerated constant to an equivalent enumerated object
+            </summary>
+            <typeparam name="T">an enumeration type</typeparam>
+            <param name="enumString">a nullable string containing the name to convert</param>
+            <returns>an object of type T whose value is represented by enumString</returns>
+        </member>
+        <member name="M:GoogleCast.EnumHelper.GetName``1(``0)">
+            <summary>
+            Retrieves the name of the constant in the specified enumeration that has the specified value
+            </summary>
+            <typeparam name="T">an enumeration type</typeparam>
+            <param name="value">the value of a particular enumerated constant in terms of its underlying type</param>
+            <returns>a string containing the name of the enumerated constant in enumType whose value is value; or null if no such constant is found</returns>
+        </member>
+        <member name="M:GoogleCast.EnumHelper.GetName``1(System.Nullable{``0})">
+            <summary>
+            Retrieves the name of the constant in the specified enumeration that has the specified value
+            </summary>
+            <typeparam name="T">an enumeration type</typeparam>
+            <param name="value">the value of a particular enumerated constant in terms of its underlying type</param>
+            <returns>a string containing the name of the enumerated constant in enumType whose value is value; or null if no such constant is found</returns>
+        </member>
+        <member name="T:GoogleCast.IDeviceLocator">
+            <summary>
+            Interface for the device locator
+            </summary>
+        </member>
+        <member name="M:GoogleCast.IDeviceLocator.FindReceiversAsync">
+            <summary>
+            Finds the available receivers
+            </summary>
+            <returns>a collection of receivers</returns>
+        </member>
+        <member name="M:GoogleCast.IDeviceLocator.FindReceiversContinuous">
+            <summary>
+            Finds the available receivers in continuous way
+            </summary>
+            <returns>a provider for notifications</returns>
+        </member>
+        <member name="T:GoogleCast.IMessageTypes">
+            <summary>
+            Interface for message types dictionary
+            </summary>
+        </member>
+        <member name="T:GoogleCast.IReceiver">
+            <summary>
+            Interface for a receiver
+            </summary>
+        </member>
+        <member name="P:GoogleCast.IReceiver.FriendlyName">
+            <summary>
+            Gets the friendly name
+            </summary>
+        </member>
+        <member name="P:GoogleCast.IReceiver.IPEndPoint">
+            <summary>
+            Gets the network endpoint
+            </summary>
+        </member>
+        <member name="T:GoogleCast.ISender">
+            <summary>
+            Interface for the GoogleCast sender
+            </summary>
+        </member>
+        <member name="E:GoogleCast.ISender.Disconnected">
+            <summary>
+            Raised when the sender is disconnected
+            </summary>
+        </member>
+        <member name="M:GoogleCast.ISender.GetChannel``1">
+            <summary>
+            Gets a channel
+            </summary>
+            <typeparam name="TChannel">channel type</typeparam>
+            <returns>a channel</returns>
+        </member>
+        <member name="M:GoogleCast.ISender.ConnectAsync(GoogleCast.IReceiver)">
+            <summary>
+            Connects to a receiver
+            </summary>
+            <param name="receiver">receiver</param>
+        </member>
+        <member name="M:GoogleCast.ISender.DisconnectAsync">
+            <summary>
+            Disconnects
+            </summary>
+        </member>
+        <member name="M:GoogleCast.ISender.LaunchAsync``1">
+            <summary>
+            Launches an application
+            </summary>
+            <typeparam name="TAppChannel">application channel type</typeparam>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.ISender.LaunchAsync(GoogleCast.Channels.IApplicationChannel)">
+            <summary>
+            Launches an application
+            </summary>
+            <param name="applicationChannel">application channel</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.ISender.LaunchAsync(System.String)">
+            <summary>
+            Launches an application
+            </summary>
+            <param name="applicationId">application identifier</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.ISender.SendAsync(System.String,GoogleCast.Messages.IMessage,System.String)">
+            <summary>
+            Sends a message
+            </summary>
+            <param name="ns">namespace</param>
+            <param name="message">message to send</param>
+            <param name="destinationId">destination identifier</param>
+        </member>
+        <member name="M:GoogleCast.ISender.SendAsync``1(System.String,GoogleCast.Messages.IMessageWithId,System.String)">
+            <summary>
+            Sends a message
+            </summary>
+            <typeparam name="TResponse">response type</typeparam>
+            <param name="ns">namespace</param>
+            <param name="message">message to send</param>
+            <param name="destinationId">destination identifier</param>
+            <returns>the result</returns>
+        </member>
+        <member name="M:GoogleCast.ISender.GetStatuses">
+            <summary>
+            Gets the differents statuses
+            </summary>
+            <returns>a dictionnary of namespace/status</returns>
+        </member>
+        <member name="M:GoogleCast.ISender.RestoreStatuses(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Restore the differents statuses
+            </summary>
+            <param name="statuses">statuses to restore</param>
+        </member>
+        <member name="T:GoogleCast.JsonSerializer">
+            <summary>
+            Json serializer
+            </summary>
+        </member>
+        <member name="M:GoogleCast.JsonSerializer.SerializeToUTF8String(System.Object)">
+            <summary>
+            Serializes an object to a JSON UTF-8 string
+            </summary>
+            <param name="obj">object to serialize</param>
+            <returns>a string corresponding to the serialized object</returns>
+        </member>
+        <member name="M:GoogleCast.JsonSerializer.Serialize(System.Object)">
+            <summary>
+            Serializes an object to JSON
+            </summary>
+            <param name="obj">object to serialize</param>
+            <returns>a JSON byte array</returns>
+        </member>
+        <member name="M:GoogleCast.JsonSerializer.Deserialize``1(System.String)">
+            <summary>
+            Deserializes an JSON UTF-8 string to an object
+            </summary>
+            <typeparam name="T">object type</typeparam>
+            <param name="utf8String">JSON UTF-8 string</param>
+            <returns>the corresponding object</returns>
+        </member>
+        <member name="M:GoogleCast.JsonSerializer.Deserialize``1(System.Byte[])">
+            <summary>
+            Deserializes an JSON byte array to an object
+            </summary>
+            <typeparam name="T">object type</typeparam>
+            <param name="str">JSON byte array</param>
+            <returns>the corresponding object</returns>
+        </member>
+        <member name="M:GoogleCast.JsonSerializer.Deserialize(System.Type,System.String)">
+            <summary>
+            Deserializes an JSON UTF-8 string to an object
+            </summary>
+            <param name="type">object type</param>
+            <param name="utf8String">JSON UTF-8 string</param>
+            <returns>the corresponding object</returns>
+        </member>
+        <member name="M:GoogleCast.JsonSerializer.Deserialize(System.Type,System.Byte[])">
+            <summary>
+            Deserializes an JSON byte array to an object
+            </summary>
+            <param name="type">object type</param>
+            <param name="str">JSON byte array</param>
+            <returns>the corresponding object</returns>
+        </member>
+        <member name="T:GoogleCast.Messages.Connection.CloseMessage">
+            <summary>
+            Close message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Connection.ConnectMessage">
+            <summary>
+            Connect message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Heartbeat.PingMessage">
+            <summary>
+            Ping message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Heartbeat.PongMessage">
+            <summary>
+            Pong message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.IMessage">
+            <summary>
+            Interface for a message
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.IMessage.Type">
+            <summary>
+            Gets the message type
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.IMessageWithId">
+            <summary>
+            Interface for messages with request identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.IMessageWithId.RequestId">
+            <summary>
+            Gets the request identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.IStatusMessage`1">
+            <summary>
+            Interface for status messages
+            </summary>
+            <typeparam name="TStatus">status type</typeparam>
+        </member>
+        <member name="P:GoogleCast.Messages.IStatusMessage`1.Status">
+            <summary>
+            Gets the status
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.EditTracksInfoMessage">
+            <summary>
+            Media event EDIT_TRACKS_INFO request data
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.EditTracksInfoMessage.ActiveTrackIds">
+            <summary>
+            Gets or sets the track identifiers that should be active
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.EditTracksInfoMessage.EnableTextTracks">
+            <summary>
+            Gets or sets a value indicating whether the text tracks should be enabled or not
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.EditTracksInfoMessage.Language">
+            <summary>
+            Gets or sets the language for the tracks that should be active
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.EditTracksInfoMessage.TextTrackStyle">
+            <summary>
+            Gets or sets the text track style.
+            If it is not provided the existing style will be used (if no style was provided in previous calls, it will be the default receiver style)
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueGetItemIdsMessage">
+            <summary>
+            A request to retrieve all of the item ids currently in the queue
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueGetItemsMessage">
+            <summary>
+            A request to to retrieve the information of the given list of queue item ids
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueGetItemsMessage.ItemIds">
+            <summary>
+            Gets or sets the array of item ids of which to retrieve the info 
+            </summary>
+            <remarks>must not be null or empty</remarks>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.GetStatusMessage">
+            <summary>
+            Message to retrieve the media status
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.InvalidRequestMessage">
+            <summary>
+            Invalid request message
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.InvalidRequestMessage.Reason">
+            <summary>
+            Gets or sets the reason
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.LoadCancelledMessage">
+            <summary>
+            Load cancelled message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.LoadFailedMessage">
+            <summary>
+            Load failed message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.LoadMessage">
+            <summary>
+            Message to load new content into the media player
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.LoadMessage.Media">
+            <summary>
+            Gets or sets the metadata (including contentId) of the media to load
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.LoadMessage.AutoPlay">
+            <summary>
+            Gets or sets a value indicating whether the media player will begin playing the content when it is loaded or not
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.LoadMessage.ActiveTrackIds">
+            <summary>
+            Gets or sets the identifiers of the tracks that should be active. 
+            </summary>
+            <remarks>if the array is not provided, the default tracks will be active</remarks>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.MediaSessionMessage">
+            <summary>
+            Media session message
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.MediaSessionMessage.MediaSessionId">
+            <summary>
+            Gets or sets the media session identifier
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.MediaStatusMessage">
+            <summary>
+            Message to retrieve the media status
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.PauseMessage">
+            <summary>
+            Message to pause playback of the current content
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.PlayMessage">
+            <summary>
+            Message to begin playback of the content that was loaded with the load call
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueChangeMessage">
+            <summary>
+            Message to retrieve all changed queued item ids
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueChangeMessage.ItemIds">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueChangeMessage.ChangeType">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueInsertMessage">
+            <summary>
+            A request to load and optionally start playback of a new ordered list of media items
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueInsertMessage.Items">
+            <summary>
+            Gets or sets the array of items to insert into the queue. It is sorted (first element will be played first)
+            </summary>
+            <remarks>must not be null or empty</remarks>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueItemIdsMessage">
+            <summary>
+            Message to retrieve all queued item ids
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueItemIdsMessage.ItemIds">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueItemsMessage">
+            <summary>
+            Message to retrieve all queued item ids
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueItemsMessage.Items">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueLoadMessage">
+            <summary>
+            A request to load and optionally start playback of a new ordered list of media items
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueLoadMessage.Items">
+            <summary>
+            Gets or sets the array of items to load. It is sorted (first element will be played first)
+            </summary>
+            <remarks>must not be null or empty</remarks>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueLoadMessage.RepeatMode">
+            <summary>
+            Gets or sets the algorithm for selection of the next item when the current item has ended
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueLoadMessage.StartIndex">
+            <summary>
+            Gets or sets the index of the item in the items array that must be the first currentItem (the item that will be played first)
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueMessage">
+            <summary>
+            Queue message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueRemoveMessage">
+            <summary>
+            Message to remove given queued item ids
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueRemoveMessage.ItemIds">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueReorderMessage">
+            <summary>
+            Message to reorder the given queued item ids
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueReorderMessage.ItemIds">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueUpdateMessage">
+            <summary>
+            Message to update the queue
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueUpdateMessage.CurrentItemId">
+            <summary>
+            Gets or sets the item id of the currently playing media
+            </summary>        
+        </member>
+        <member name="P:GoogleCast.Messages.Media.QueueUpdateMessage.Shuffle">
+            <summary>
+            Gets or sets the shuffle state
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Messages.Media.SeekMessage">
+            <summary>
+            Message to set the current position in the stream
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.SeekMessage.CurrentTime">
+            <summary>
+            Gets or sets the seconds since beginning of content
+            </summary>
+            <remarks>if the content is live content, and position is not specifed, the stream will start at the live position</remarks>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.SetPlaybackRateMessage">
+            <summary>
+            Message to set the current playback rate of the stream
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Media.SetPlaybackRateMessage.PlaybackRate">
+            <summary>
+            Gets or sets the relative playback rate
+            </summary>
+            <remarks>the given playback will affect the current playback rate</remarks>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueuePrevMessage">
+            <summary>
+            Message to skip to the previous item in the queue
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.QueueNextMessage">
+            <summary>
+            Message to skip to the next item in the queue
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Media.StopMessage">
+            <summary>
+            Message to stop playback of the current content
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Message">
+            <summary>
+            Message base class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Messages.Message.#ctor">
+            <summary>
+            Initialization
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Message.Type">
+            <summary>
+            Gets the message type
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Messages.Message.GetMessageType(System.Type)">
+            <summary>
+            Gets the message type
+            </summary>
+            <returns>message class type</returns>
+        </member>
+        <member name="T:GoogleCast.Messages.MessageWithId">
+            <summary>
+            Message with request identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.MessageWithId.HasRequestId">
+            <summary>
+            Gets a value indicating whether the message has a request identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.MessageWithId.RequestId">
+            <summary>
+            Gets or sets the request identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Receiver.GetStatusMessage">
+            <summary>
+            Get status message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Receiver.LaunchMessage">
+            <summary>
+            Launch message
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Receiver.LaunchMessage.ApplicationId">
+            <summary>
+            Gets or sets the application identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Receiver.ReceiverStatusMessage">
+            <summary>
+            Receiver status message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Receiver.SetVolumeMessage">
+            <summary>
+            Volume Message
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.Receiver.SetVolumeMessage.Volume">
+            <summary>
+            Gets or sets the volume
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.Receiver.StopMessage">
+            <summary>
+            Stop message
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.ReceptionMessageAttribute">
+            <summary>
+            Attribute for received messages
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.SessionMessage">
+            <summary>
+            Session message base class
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Messages.SessionMessage.SessionId">
+            <summary>
+            Gets or sets the session identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Messages.StatusMessage`1">
+            <summary>
+            Status message base class
+            </summary>
+            <typeparam name="TStatus">status type</typeparam>
+        </member>
+        <member name="P:GoogleCast.Messages.StatusMessage`1.Status">
+            <summary>
+            Gets or sets the status
+            </summary>
+        </member>
+        <member name="T:GoogleCast.MessageTypes">
+            <summary>
+            Dictionary of message types
+            </summary>
+        </member>
+        <member name="M:GoogleCast.MessageTypes.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.MessageTypes"/> class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.MessageTypes.AddMessageTypes(System.Reflection.Assembly)">
+            <summary>
+            Adds all the message types of a given assembly
+            </summary>
+            <param name="assembly">assembly</param>
+        </member>
+        <member name="T:GoogleCast.Models.Image">
+            <summary>
+            Image
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Image.Url">
+            <summary>
+            Gets or sets the URI for the image
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Image.Height">
+            <summary>
+            Gets or sets the height of the image
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Image.Width">
+            <summary>
+            Gets or sets the width of the image
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.GenericMediaMetadata">
+            <summary>
+            Media metadata
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Models.Media.GenericMediaMetadata.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Models.Media.GenericMediaMetadata"/> class
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.GenericMediaMetadata.MetadataType">
+            <summary>
+            Gets the metadata type
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.GenericMediaMetadata.Title">
+            <summary>
+            Gets or sets the descriptive title of the content
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.GenericMediaMetadata.Subtitle">
+            <summary>
+            Gets or sets the descriptive subtitle of the content
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.GenericMediaMetadata.Images">
+            <summary>
+            Gets or sets an array of URL(s) to an image associated with the content
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.MediaInformation">
+            <summary>
+            Describes a media stream
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.ContentId">
+            <summary>
+            Gets or sets the service-specific identifier of the content currently loaded by the media player
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.StreamType">
+            <summary>
+            Gets or sets the type of media artifact
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.ContentType">
+            <summary>
+            Gets or sets the MIME content type of the media being played
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.Metadata">
+            <summary>
+            Gets or sets the media metadata object
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.Duration">
+            <summary>
+            Gets or sets the duration of the currently playing stream in seconds
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.CustomData">
+            <summary>
+            Gets or sets the custom data
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.Tracks">
+            <summary>
+            Gets or sets the tracks
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaInformation.TextTrackStyle">
+            <summary>
+            Gets or sets the style of text track
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.MediaStatus">
+            <summary>
+            Media status
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.MediaSessionId">
+            <summary>
+            Gets or sets the media session identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.PlaybackRate">
+            <summary>
+            Gets or sets the playback rate
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.PlayerState">
+            <summary>
+            Gets or sets the player state
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.CurrentTime">
+            <summary>
+            Gets or sets the current time
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.SupportedMediaCommands">
+            <summary>
+            Gets or sets the supported media commands
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.Volume">
+            <summary>
+            Gets or sets the volume
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.IdleReason">
+            <summary>
+            Gets or sets the idle reason
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.Media">
+            <summary>
+            Gets or sets the media
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.CurrentItemId">
+            <summary>
+            Gets or sets the current item identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.ExtendedStatus">
+            <summary>
+            Gets or sets the extended status
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.RepeatMode">
+            <summary>
+            Gets or sets the repeat mode
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MediaStatus.QueueItems">
+            <summary>
+            Gets or sets the queue items
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.MetadataType">
+            <summary>
+            Metadata type
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.MetadataType.Default">
+            <summary>
+            Default
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.MetadataType.Movie">
+            <summary>
+            Movie
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.MetadataType.Music">
+            <summary>
+            Music
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.MetadataType.Photo">
+            <summary>
+            Photo
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.MovieMetadata">
+            <summary>
+            Movie metadata
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Models.Media.MovieMetadata.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Models.Media.MovieMetadata"/> class
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.MovieMetadata.Studio">
+            <summary>
+            Gets or sets the studio
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.QueueChangeType">
+            <summary>
+            Queue change type
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.QueueChangeType.Insert">
+            <summary>
+            Insert
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.QueueChangeType.Remove">
+            <summary>
+            Remove
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.QueueChangeType.ItemsChange">
+            <summary>
+            Items Change
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.QueueChangeType.Update">
+            <summary>
+            Update
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.QueueChangeType.NoChange">
+            <summary>
+            No Change
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.QueueItem">
+            <summary>
+            Queue item information
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.ActiveTrackIds">
+            <summary>
+            Gets or sets the track identifiers that are active
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.Autoplay">
+            <summary>
+            Gets or sets a value indicating whether the media will automatically play
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.ItemId">
+            <summary>
+            Gets or sets the unique identifier of the item in the queue
+            </summary>
+            <remarks>the attribute is optional because for LOAD or INSERT should not be provided
+            (as it will be assigned by the receiver when an item is first created/inserted).</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.Media">
+            <summary>
+            Gets or sets the metadata (including contentId) of the playlist element
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.StartTime">
+            <summary>
+            Gets or sets the seconds from the beginning of the media to start playback
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.PreloadTime">
+            <summary>
+            Gets or sets the seconds from the beginning of the media to start playback
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueItem.OrderId">
+            <summary>
+            Gets or sets the ordered number of the queue item
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.QueueStatus">
+            <summary>
+            Queue status
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueStatus.ItemIds">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueStatus.ChangeType">
+            <summary>
+            Gets or sets the type of media artifact
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.QueueStatus.ChangeTypeString">
+            <summary>
+            Gets or sets the item id array
+            </summary>        
+        </member>
+        <member name="T:GoogleCast.Models.Media.RepeatMode">
+            <summary>
+            Possible states of queue repeat mode
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.RepeatMode.RepeatOff">
+            <summary>
+            Items are played in order, and when the queue is completed (the last item has ended) the media session is terminated
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.RepeatMode.RepeatAll">
+            <summary>
+            The items in the queue will be played indefinitely. When the last item has ended, the first item will be played again
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.RepeatMode.RepeatSingle">
+            <summary>
+            The current item will be repeated indefinitely
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.RepeatMode.RepeatAllAndShuffle">
+            <summary>
+            The items in the queue will be played indefinitely.
+            When the last item has ended, the list of items will be randomly shuffled by the receiver,
+            and the queue will continue to play starting from the first item of the shuffled items.
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.StreamType">
+            <summary>
+            Stream type
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.StreamType.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.StreamType.Live">
+            <summary>
+            Live
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.StreamType.Buffered">
+            <summary>
+            Buffered
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TextTrackEdgeType">
+            <summary>
+            Possible text track edge types
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackEdgeType.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackEdgeType.Outline">
+            <summary>
+            Outline
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackEdgeType.DropShadow">
+            <summary>
+            Drop shadow
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackEdgeType.Raised">
+            <summary>
+            Raised
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackEdgeType.Depressed">
+            <summary>
+            Depressed
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TextTrackFontGenericFamily">
+            <summary>
+            Text track font generic family
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.SansSerif">
+            <summary>
+            Sans serif
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.MonospacedSansSerif">
+            <summary>
+            Monospaced sans serif
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.Serif">
+            <summary>
+            Serif
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.MonospacedSerif">
+            <summary>
+            Monospaced serif
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.Casual">
+            <summary>
+            Casual
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.Cursive">
+            <summary>
+            Cursive
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontGenericFamily.SmallCapitals">
+            <summary>
+            Small capitals
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TextTrackFontStyle">
+            <summary>
+            Possible text track font styles
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontStyle.Normal">
+            <summary>
+            Normal
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontStyle.Bold">
+            <summary>
+            Bold
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontStyle.BoldItalic">
+            <summary>
+            Bold italic
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackFontStyle.Italic">
+            <summary>
+            Italic
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TextTrackStyle">
+            <summary>
+            Describes style information for a text track
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.BackgroundColor">
+            <summary>
+            Gets or sets the background 32 bit RGBA color
+            </summary>
+            <remarks>the alpha channel should be used for transparent backgrounds</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.EdgeColor">
+            <summary>
+            Gets or sets the RGBA color for the edge
+            </summary>
+            <remarks>this value will be ignored if EdgeType is None</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.EdgeType">
+            <summary>
+            Gets or sets the text track edge type
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.FontFamily">
+            <summary>
+            Gets or sets the font family
+            </summary>
+            <remarks>if the font is not available in the receiver, the fontGenericFamily will be used</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.FontGenericFamily">
+            <summary>
+            Gets or sets the text track generic family
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.FontScale">
+            <summary>
+            Gets or sets font scaling factor for the text track
+            </summary>
+            <remarks>the default is 1</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.FontStyle">
+            <summary>
+            Gets or sets the text track font style
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.ForegroundColor">
+            <summary>
+            Gets or sets the foreground 32 bit RGBA color
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.WindowColor">
+            <summary>
+            Gets or sets the 32 bit RGBA color for the window
+            </summary>
+            <remarks>this value will be ignored if WindowType is None</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.WindowRoundedCornerRadius">
+            <summary>
+            Gets or sets the rounded corner radius absolute value in pixels (px)
+            </summary>
+            <remarks>this value will be ignored if windowType is not RoundedCorners</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.TextTrackStyle.WindowType">
+            <summary>
+            Gets or sets the window type
+            </summary>
+            <remarks>the window concept is defined in CEA-608 and CEA-708. In WebVTT is called a region</remarks>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TextTrackType">
+            <summary>
+            Possible text track types
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackType.Subtitles">
+            <summary>
+            Transcription or translation of the dialogue, suitable for when the sound is available but not understood
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackType.Captions">
+            <summary>
+            Transcription or translation of the dialogue, sound effects, relevant musical cues, and other relevant audio information, 
+            suitable for when the soundtrack is unavailable
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackType.Descriptions">
+            <summary>
+            Textual descriptions of the video component of the media resource, intended for audio synthesis when 
+            the visual component is unavailable
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackType.Chapters">
+            <summary>
+            Chapter titles, intended to be used for navigating the media resource
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackType.Metadata">
+            <summary>
+            Tracks intended for use from script
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TextTrackWindowType">
+            <summary>
+            Text track window types
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackWindowType.None">
+            <summary>
+            None
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackWindowType.Normal">
+            <summary>
+            Normal
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TextTrackWindowType.RoundedCorners">
+            <summary>
+            Rounded corners
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Media.Track">
+            <summary>
+            Track metadata information
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.TrackId">
+            <summary>
+            Gets or sets the unique identifier of the track
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.Type">
+            <summary>
+            Gets or sets the type of track
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.TrackContentType">
+            <summary>
+            Gets or sets the MIME type of the track content
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.TrackContentId">
+            <summary>
+            Gets or sets the identifier of the track’s content
+            </summary>
+            <remarks>it can be the url of the track or any other identifier that allows the receiver to find the content 
+            (when the track is not inband or included in the manifest)</remarks>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.SubType">
+            <summary>
+            Gets or sets the type of text track
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.Name">
+            <summary>
+            Gets or sets a descriptive, human readable name for the track
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Media.Track.Language">
+            <summary>
+            Gets or sets the language tag as per RFC 5646
+            </summary>
+            <remarks>mandatory when the subtype is Subtitles</remarks>
+        </member>
+        <member name="T:GoogleCast.Models.Media.TrackType">
+            <summary>
+            Track type
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TrackType.Text">
+            <summary>
+            Text
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TrackType.Audio">
+            <summary>
+            Audio
+            </summary>
+        </member>
+        <member name="F:GoogleCast.Models.Media.TrackType.Video">
+            <summary>
+            Video
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Receiver.Application">
+            <summary>
+            Application
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.AppId">
+            <summary>
+            Gets or sets the application identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.DisplayName">
+            <summary>
+            Gets or sets the display name
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.IsIdleScreen">
+            <summary>
+            Gets or sets a value indicating whether the backdrop app is running or not 
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.Namespaces">
+            <summary>
+            Gets or sets the namespaces
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.SessionId">
+            <summary>
+            Gets or sets the session identifier
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.StatusText">
+            <summary>
+            Gets or sets the status text
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Application.TransportId">
+            <summary>
+            Gets or sets the transport identifier
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Receiver.Namespace">
+            <summary>
+            Namespace
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.Namespace.Name">
+            <summary>
+            Gets or sets the name
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Receiver.ReceiverStatus">
+            <summary>
+            Receiver status
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.ReceiverStatus.Applications">
+            <summary>
+            Gets or sets the applications collection
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Receiver.ReceiverStatus.Volume">
+            <summary>
+            Gets or sets the volume
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Models.Volume">
+            <summary>
+            Volume
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Volume.Level">
+            <summary>
+            Gets or sets the volume level
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Volume.IsMuted">
+            <summary>
+            Gets or sets a value indicating whether the audio is muted
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Models.Volume.StepInterval">
+            <summary>
+            Gets or sets the step interval
+            </summary>
+        </member>
+        <member name="T:GoogleCast.PayloadType">
+            <summary>
+            Payload type
+            </summary>
+        </member>
+        <member name="F:GoogleCast.PayloadType.String">
+            <summary>
+            String
+            </summary>
+        </member>
+        <member name="F:GoogleCast.PayloadType.Binary">
+            <summary>
+            Binary
+            </summary>
+        </member>
+        <member name="T:GoogleCast.ProtocolVersion">
+            <summary>
+            Protocol version
+            </summary>
+        </member>
+        <member name="F:GoogleCast.ProtocolVersion.CastV2_1_0">
+            <summary>
+            CastV2_1_0
+            </summary>
+        </member>
+        <member name="T:GoogleCast.Receiver">
+            <summary>
+            GoogleCast receiver
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Receiver.FriendlyName">
+            <summary>
+            Gets or sets the friendly name
+            </summary>
+        </member>
+        <member name="P:GoogleCast.Receiver.IPEndPoint">
+            <summary>
+            Gets or sets the network endpoint
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Receiver.Equals(System.Object)">
+            <summary>
+            Determines whether the specified object is equal to the current object
+            </summary>
+            <param name="obj">The object to compare with the current object</param>
+            <returns>true if the specified object is equal to the current object; otherwise, false</returns>
+        </member>
+        <member name="M:GoogleCast.Receiver.GetHashCode">
+            <summary>
+            Serves as the default hash function
+            </summary>
+            <returns>A hash code for the current object</returns>
+        </member>
+        <member name="T:GoogleCast.Sender">
+            <summary>
+            GoogleCast sender
+            </summary>
+        </member>
+        <member name="E:GoogleCast.Sender.Disconnected">
+            <summary>
+            Raised when the sender is disconnected
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Sender.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Sender"/> class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Sender.#ctor(System.IServiceProvider)">
+            <summary>
+            Initializes a new instance of <see cref="T:GoogleCast.Sender"/> class
+            </summary>
+            <param name="serviceProvider">collection of service descriptors</param>
+        </member>
+        <member name="M:GoogleCast.Sender.DisconnectAsync">
+            <summary>
+            Disconnects
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Sender.OnDisconnected">
+            <summary>
+            Raises the Disconnected event
+            </summary>
+        </member>
+        <member name="M:GoogleCast.Sender.GetChannel``1">
+            <summary>
+            Gets a channel
+            </summary>
+            <typeparam name="TChannel">channel type</typeparam>
+            <returns>a channel</returns>
+        </member>
+        <member name="M:GoogleCast.Sender.ConnectAsync(GoogleCast.IReceiver)">
+            <summary>
+            Connects to a receiver
+            </summary>
+            <param name="receiver">receiver</param>
+        </member>
+        <member name="M:GoogleCast.Sender.LaunchAsync``1">
+            <summary>
+            Launches an application
+            </summary>
+            <typeparam name="TAppChannel">application channel type</typeparam>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Sender.LaunchAsync(GoogleCast.Channels.IApplicationChannel)">
+            <summary>
+            Launches an application
+            </summary>
+            <param name="applicationChannel">application channel</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Sender.LaunchAsync(System.String)">
+            <summary>
+            Launches an application
+            </summary>
+            <param name="applicationId">application identifier</param>
+            <returns>receiver status</returns>
+        </member>
+        <member name="M:GoogleCast.Sender.SendAsync(System.String,GoogleCast.Messages.IMessage,System.String)">
+            <summary>
+            Sends a message
+            </summary>
+            <param name="ns">namespace</param>
+            <param name="message">message to send</param>
+            <param name="destinationId">destination identifier</param>
+        </member>
+        <member name="M:GoogleCast.Sender.SendAsync``1(System.String,GoogleCast.Messages.IMessageWithId,System.String)">
+            <summary>
+            Sends a message
+            </summary>
+            <typeparam name="TResponse">response type</typeparam>
+            <param name="ns">namespace</param>
+            <param name="message">message to send</param>
+            <param name="destinationId">destination identifier</param>
+            <returns>the result</returns>
+        </member>
+        <member name="M:GoogleCast.Sender.GetStatuses">
+            <summary>
+            Gets the differents statuses
+            </summary>
+            <returns>a dictionnary of namespace/status</returns>
+        </member>
+        <member name="M:GoogleCast.Sender.RestoreStatuses(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Restore the differents statuses
+            </summary>
+            <param name="statuses">statuses to restore</param>
+        </member>
+        <member name="T:GoogleCast.ServiceCollectionExtensions">
+            <summary>
+            Services registration
+            </summary>
+        </member>
+        <member name="M:GoogleCast.ServiceCollectionExtensions.AddGoogleCast(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Registers the services
+            </summary>
+            <param name="services">services to register</param>
+            <returns>the service descriptors collection</returns>
+        </member>
+        <member name="T:GoogleCast.StringExtensions">
+            <summary>
+            Extensions methods for <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:GoogleCast.StringExtensions.ToUnderscoreUpperInvariant(System.String)">
+            <summary>
+            Converts a camel case string to underscore notation
+            </summary>
+            <param name="str">string to convert</param>
+            <returns>the converted string to underscore notation</returns>
+        </member>
+        <member name="M:GoogleCast.StringExtensions.ToCamelCase(System.String)">
+            <summary>
+            Converts a string to camel case notation
+            </summary>
+            <param name="str">string to convert</param>
+            <returns>camel case notation</returns>
+        </member>
+        <member name="T:GoogleCast.TaskExtensions">
+            <summary>
+            Extensions methods for Task class
+            </summary>
+        </member>
+        <member name="M:GoogleCast.TaskExtensions.TimeoutAfter``1(System.Threading.Tasks.Task{``0},System.Int32)">
+            <summary>
+            Throws a TimeoutException if a task is not completed before a delay
+            </summary>
+            <typeparam name="T">return type</typeparam>
+            <param name="task">task</param>
+            <param name="delay">the delay in milliseconds</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:GoogleCast.TaskExtensions.TimeoutAfter(System.Threading.Tasks.Task,System.Int32)">
+            <summary>
+            Throws a TimeoutException if a task is not completed before a delay
+            </summary>
+            <param name="task">task</param>
+            <param name="delay">the delay in milliseconds</param>
+            <returns>T</returns>
+        </member>
+    </members>
+</doc>

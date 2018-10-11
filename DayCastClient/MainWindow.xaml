@@ -1,0 +1,968 @@
+﻿<Window x:Class="DayCastClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DayCastClient"
+        mc:Ignorable="d"
+        Title="DayCast"
+        ShowInTaskbar="False" 
+        StateChanged="Window_StateChanged"
+        WindowStyle="SingleBorderWindow"
+        WindowState="Minimized"
+        WindowStartupLocation="Manual"
+        Visibility="Visible"
+        ResizeMode="CanMinimize"
+        Topmost="True"
+        Icon="pack://application:,,,/DayCastClient;component/Resources/DayCast.ico"
+        Initialized="Window_Initialized"
+        Closing="Window_Closing"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        d:DesignHeight="400"
+        d:DesignWidth="800">
+
+    <Window.Resources>
+        <local:DoubleSecondsToTimeSpanConverter x:Key="DoubleSecondsToTimeSpanConverter" />
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <local:BoolToVolumeIsMutedStyleConverter x:Key="BoolToVolumeIsMutedStyleConverter" />
+        <local:PlaybackRateToCheckedConverter x:Key="PlaybackRateToCheckedConverter" /> 
+        <Style x:Key="RefreshImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M16,8C16,12.411 12.411,16 8,16 3.589,16 0,12.411 0,8 0,6.597 0.384,5.212 1.088,4L0,4 0,0 8,0 8,8 4,8C4,10.206 5.794,12 8,12 10.206,12 12,10.206 12,8 12,6.656 11.331,5.41 10.21,4.666L9.377,4.112 11.592,0.78 12.425,1.333C14.663,2.822,16,5.314,16,8" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M15,8C15,11.859 11.859,15 8,15 4.14,15 1,11.859 1,8 1,6.076 1.801,4.292 3.121,3L1,3 1,1 7,1 7,7 5,7 5,4.002C3.766,4.931 3,6.401 3,8 3,10.757 5.243,13 8,13 10.757,13 13,10.757 13,8 13,6.321 12.164,4.763 10.764,3.833L11.871,2.167C13.83,3.469,15,5.649,15,8" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PlayImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M16,4L16,12C16,13.103,15.103,14,14,14L2,14C0.897,14,0,13.103,0,12L0,4C0,2.897,0.897,2,2,2L14,2C15.103,2,16,2.897,16,4" />
+                                                        <GeometryDrawing Brush="#FF414141" Geometry="F1M6,11L6,5 10.954,8z M14,3L2,3C1.448,3,1,3.448,1,4L1,12C1,12.552,1.448,13,2,13L14,13C14.552,13,15,12.552,15,12L15,4C15,3.448,14.552,3,14,3" />
+                                                        <GeometryDrawing Brush="#FFF0EFF1" Geometry="F1M6,5L10.954,8 6,11z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PauseImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M13,13L3,13 3,2 13,2z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M12,3L9,3 9,12 12,12z M7,12L4,12 4,3 7,3z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="StopImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M13,13L3,13 3,3 13,3z" />
+                                                        <GeometryDrawing Brush="#FFA1260D" Geometry="F1M12,12L4,12 4,4 12,4z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="NextImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M14.752,7.9492L6,2.1352 6,3.0002 3,3.0002 3,13.0002 6,13.0002 6,13.8872z" />
+                                                        <GeometryDrawing Brush="#FF414141" Geometry="F1M7,4L12.958,7.958 7,12z" />
+                                                        <GeometryDrawing Brush="#FF414141" Geometry="F1M4,12L5.001,12 5.001,4 4,4z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PreviousImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M2.248,8.0723L11,13.8853 11,13.0003 14,13.0003 14,3.0003 11,3.0003 11,2.1343z" />
+                                                        <GeometryDrawing Brush="#FF414141" Geometry="F1M10,12L3.794,8.063 10,4z" />
+                                                        <GeometryDrawing Brush="#FF414141" Geometry="F1M12,12L13,12 13,4 12,4z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="VolumeImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.5861,-0.000199999999999534L3.5851,4.0008 9.99999999997669E-05,4.0008 9.99999999997669E-05,10.9998 3.5851,10.9998 7.5861,14.9998 10.0001,14.9998 10.0001,9.9998 10.9291,9.9998 13.3011,12.3708 15.3701,10.3008 14.0701,8.9998 16.0001,8.9998 16.0001,5.9998 14.0701,5.9998 15.3701,4.6988 13.3011,2.6298 10.9291,4.9998 10.0001,4.9998 10.0001,-0.000199999999999534z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M13,7C13.032,7.162 13.05,7.329 13.05,7.5 13.05,7.671 13.032,7.838 13,8L15,8 15,7z M11.956,9.611L13.301,10.957 13.956,10.301 12.611,8.957C12.439,9.217,12.217,9.439,11.956,9.611 M12.611,6.043L13.956,4.699 13.301,4.043 11.956,5.388C12.217,5.561,12.439,5.783,12.611,6.043 M9,6L11,6 11,9 9,9 9,14 8,14 4,10 1,10 1,5 4,5 8,1 9,1z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="VolumeMutedImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.5861,-0.000199999999999534L3.5851,4.0008 9.99999999997669E-05,4.0008 9.99999999997669E-05,10.9998 3.5851,10.9998 7.5861,14.9998 10.0001,14.9998 10.0001,9.9998 10.9291,9.9998 13.3011,12.3708 15.3701,10.3008 14.0701,8.9998 16.0001,8.9998 16.0001,5.9998 14.0701,5.9998 15.3701,4.6988 13.3011,2.6298 10.9291,4.9998 10.0001,4.9998 10.0001,-0.000199999999999534z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M13,7C13.032,7.162 13.05,7.329 13.05,7.5 13.05,7.671 13.032,7.838 13,8L15,8 15,7z M11.956,9.611L13.301,10.957 13.956,10.301 12.611,8.957C12.439,9.217,12.217,9.439,11.956,9.611 M12.611,6.043L13.956,4.699 13.301,4.043 11.956,5.388C12.217,5.561,12.439,5.783,12.611,6.043 M9,6L11,6 11,9 9,9 9,14 8,14 4,10 1,10 1,5 4,5 8,1 9,1z" />
+                                                        <GeometryDrawing Brush="#FFE51400" Geometry="F1M12.1592,10.7305L5.4402,3.7285C6.2012,3.2555 7.0922,2.9685 8.0512,2.9685 10.7912,2.9685 13.0212,5.1995 13.0212,7.9385 13.0212,8.9725 12.7002,9.9355 12.1592,10.7305 M3.0812,7.9385C3.0812,6.8815,3.4192,5.9035,3.9842,5.0975L10.7192,12.1195C9.9462,12.6145 9.0342,12.9105 8.0512,12.9105 5.3122,12.9105 3.0812,10.6775 3.0812,7.9385 M8.0512,0.970499999999999C4.2032,0.970499999999999 1.0832,4.0915 1.0832,7.9385 1.0832,11.7875 4.2032,14.9095 8.0512,14.9095 11.9002,14.9095 15.0202,11.7875 15.0202,7.9385 15.0202,4.0915 11.9002,0.970499999999999 8.0512,0.970499999999999" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="UpImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M7.6716,-0.000199999999999534L0.3786,7.2938 3.2066,10.1208 6.0006,7.3288 6.0006,15.9998 9.9996,15.9998 9.9996,7.3288 12.7926,10.1208 15.6216,7.2938 8.3276,-0.000199999999999534z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M12.793,8.707L9,4.914 9,15 7,15 7,4.914 3.207,8.707 1.793,7.293 8,1.086 14.207,7.293z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="AddImageVector" TargetType="Button">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Click">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
+                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu>
+                        <MenuItem Header="Add Files" Command="{Binding Path=DataContext.AddFilesCommand, Source={x:Reference DayCastArea}}"/>
+                        <MenuItem Header="Add Folder" Command="{Binding Path=DataContext.AddFolderCommand, Source={x:Reference DayCastArea}}"/>
+                        <MenuItem Header="Add Folder (today only)" Command="{Binding Path=DataContext.AddDateFolderCommand, Source={x:Reference DayCastArea}}"/>
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M6.0003,-0.000199999999999534L6.0003,5.9998 0.000300000000000189,5.9998 0.000300000000000189,9.9998 6.0003,9.9998 6.0003,15.9998 10.0003,15.9998 10.0003,9.9998 16.0003,9.9998 16.0003,5.9998 10.0003,5.9998 10.0003,-0.000199999999999534z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M15,9L9,9 9,15 7,15 7,9 1,9 1,7 7,7 7,1 9,1 9,7 15,7z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="PlaybackRateImageVector" TargetType="Button">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Click">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="ContextMenu.IsOpen">
+                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu>
+                        <MenuItem Header="2x" 
+                                  IsChecked="{Binding Path=DataContext.PlaybackRate, Source={x:Reference DayCastArea}, Converter={StaticResource PlaybackRateToCheckedConverter}, ConverterParameter=2}"
+                                  CommandParameter="2"
+                                  Command="{Binding Path=DataContext.PlaybackRateCommand, Source={x:Reference DayCastArea}}"/>
+                        <MenuItem Header="1x (Normal Speed)" 
+                                  IsChecked="{Binding Path=DataContext.PlaybackRate, Source={x:Reference DayCastArea}, Converter={StaticResource PlaybackRateToCheckedConverter}, ConverterParameter=1}"
+                                  CommandParameter="1"
+                                  Command="{Binding Path=DataContext.PlaybackRateCommand, Source={x:Reference DayCastArea}}"/>
+                        <MenuItem Header="0.5x" 
+                                  IsChecked="{Binding Path=DataContext.PlaybackRate, Source={x:Reference DayCastArea}, Converter={StaticResource PlaybackRateToCheckedConverter}, ConverterParameter=0.5}"
+                                  CommandParameter="0.5"
+                                  Command="{Binding Path=DataContext.PlaybackRateCommand, Source={x:Reference DayCastArea}}"/>
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M3.9996,1.9996L3.9996,4.0006 2.9996,4.0006 2.9996,6.0006 1.9996,6.0006 1.9996,7.9996 0.9996,7.9996 0.9996,9.9996 -0.000399999999999956,9.9996 -0.000399999999999956,13.0006 5.6506,13.0006 6.0796,12.0356 7.1026,13.0006 16.0006,13.0006 16.0006,1.9996z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M15,3L11,3 9.563,3.984 6.443,11.004 7.5,12 15,12z M6.334,9L2,9 2,10 5.889,10z M1,11L1,12 5,12 5.444,11z M7.223,7L3,7 3,8 6.777,8z M9,3L5,3 5,4 8.556,4z M7.666,6L4,6 4,5 8.111,5z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ShuffleImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24" RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <RotateTransform Angle="90"  />
+                                    </Rectangle.RenderTransform>
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M11.9997,5.0002L10.9997,4.0002 5.0007,4.0002 3.9997,5.0002 3.9997,1.9992 -0.000299999999999301,6.0002 -0.000299999999999301,8.0002 -0.000299999999999301,10.9992 -0.000299999999999301,12.0002 6.0007,12.0002 7.9997,9.9992 9.9997,12.0002 16.0007,12.0002 16.0007,6.0002 11.9997,1.9992z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M8,5L6,5 3,8 3,5 1,7 1,9 1,10 1,11 5,11 7,9 4,9z M15,7L15,9 15,10 15,11 11,11 9,9 12,9 8,5 10,5 13,8 13,5z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RemoveImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M0,10L16,10 16,6 0,6z" />
+                                                        <GeometryDrawing Brush="#FFA1260C" Geometry="F1M15,9L1,9 1,7 15,7z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DownImageVector" TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Height="28" Width="28">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Transparent" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="LightBlue" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Viewbox Width="24" Height="24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                                <Rectangle Width="24" Height="24">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <DrawingGroup.Children>
+                                                        <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M0,0L16,0 16,16 0,16z" />
+                                                        <GeometryDrawing Brush="#FFF6F6F6" Geometry="F1M6.0003,-0.000199999999999534L6.0003,8.6718 3.2063,5.8788 0.3793,8.7078 7.6713,15.9998 8.3273,15.9998 15.6213,8.7078 12.7923,5.8788 10.0003,8.6718 10.0003,-0.000199999999999534z" />
+                                                        <GeometryDrawing Brush="#FF424242" Geometry="F1M3.207,7.293L7,11.086 7,0.999999999999999 9,0.999999999999999 9,11.086 12.793,7.293 14.207,8.707 8,14.914 1.793,8.707z" />
+                                                    </DrawingGroup.Children>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Viewbox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="DayCastArea"
+          DataContext="{Binding CastInterface}"
+          Margin="5">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" 
+              Margin="5,0">
+            <StackPanel HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                <Label Content="Selected Device:" />
+                <ComboBox MinWidth="75"
+                          Margin="5"
+                          VerticalAlignment="Center"
+                          ItemsSource="{Binding Receivers}"
+                          SelectedItem="{Binding SelectedReceiver, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="ComboBox_SelectionChanged"
+                          DisplayMemberPath="FriendlyName" />
+                <Button Style="{StaticResource RefreshImageVector}"
+                        Command="{Binding RefreshCommand}" />
+            </StackPanel>
+
+            <Label HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   MinWidth="150">
+                <TextBlock>
+                <Run Text="Device status: "/>
+                <Run Text="{Binding PlayerState}" />
+                </TextBlock>
+            </Label>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Margin="5,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="40" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="35" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0"
+                  Grid.ColumnSpan="2">
+                
+                <Label HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       MinWidth="200"
+                       Visibility="{Binding CurrentTitle, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock>
+                        <Run Text="Now Playing: #"/>
+                        <Run Text="{Binding CurrentOrderId}" />
+                        <Run Text=" - " />
+                        <Run Text="{Binding CurrentTitle}" />
+                        <Run Text=" (" />
+                        <Run Text="{Binding CurrentDuration, Converter={StaticResource DoubleSecondsToTimeSpanConverter}, StringFormat=mm\\:ss}" />
+                        <Run Text=")" />
+                    </TextBlock>
+                </Label>
+
+                <StackPanel HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <Button Style="{StaticResource PreviousImageVector}" 
+                            Command="{Binding PreviousCommand}" />
+                    <Button Margin="10,0,0,0" 
+                            Style="{StaticResource PlayImageVector}" 
+                            Command="{Binding PlayCommand}" />
+                    <Button Style="{StaticResource PauseImageVector}" 
+                            Command="{Binding PauseCommand}" />
+                    <Button Style="{StaticResource PlaybackRateImageVector}"
+                            Command="{Binding PlaybackRateCommand}"/>
+                    <Button Style="{StaticResource StopImageVector}" 
+                            Command="{Binding StopCommand}" />
+                    <Button Margin="10,0,0,0" 
+                            Style="{StaticResource NextImageVector}" 
+                            Command="{Binding NextCommand}" />
+                    <Button Margin="20,0,0,0" 
+                            Style="{Binding IsMuted, Converter={StaticResource BoolToVolumeIsMutedStyleConverter}}" 
+                            Command="{Binding SetIsMutedCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" 
+                       Grid.Column="0" 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Visibility="{Binding CurrentTitle, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock>
+                        <Run Text="{Binding CurrentTime, Converter={StaticResource DoubleSecondsToTimeSpanConverter}, StringFormat=mm\\:ss}" />
+                    </TextBlock>
+                </Label>
+
+                <Slider Grid.Row="0" 
+                        Grid.Column="1"
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        SmallChange="0.05" 
+                        LargeChange="0.2" 
+                        IsMoveToPointEnabled="True"
+                        MouseDown="Slider_MouseDown"
+                        Thumb.DragStarted="Slider_MouseDown"
+                        MouseUp="Slider_MouseUp"
+                        Thumb.DragCompleted="Slider_MouseUp"
+                        Value="{Binding CurrentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Maximum="{Binding CurrentDuration, Mode=TwoWay}" 
+                        IsEnabled="{Binding AreButtonsEnabled}"
+                        />
+
+                <Label Grid.Row="0" 
+                       Grid.Column="2" 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Visibility="{Binding CurrentTitle, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock>
+                        <Run Text="{Binding CurrentDuration, Converter={StaticResource DoubleSecondsToTimeSpanConverter}, StringFormat=mm\\:ss}" />
+                    </TextBlock>
+                </Label>
+            </Grid>
+
+            <Slider Grid.Row="1" 
+                    Grid.Column="1" 
+                    HorizontalAlignment="Center"
+                    Orientation="Vertical"
+                    IsMoveToPointEnabled="True"
+                    SmallChange="0.05" 
+                    LargeChange="0.2" 
+                    MouseUp="Volume_MouseUp"
+                    Thumb.DragCompleted="Volume_MouseUp"
+                    Value="{Binding Volume, Mode=TwoWay}" 
+                    Maximum="1" 
+                    IsEnabled="{Binding AreButtonsEnabled}"/>
+
+            <DataGrid x:Name="QueueItemsGrid"
+                      Grid.Column="0"
+                      Grid.Row="2"
+                      ItemsSource="{Binding Queue}"
+                      SelectedItem="{Binding SelectedQueueItem}"
+                      SelectionMode="Extended"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      MouseDoubleClick="QueueItemsGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Position"
+                                        Width="Auto"
+                                        Binding="{Binding Path=OrderId}"/>
+                    <DataGridTextColumn Header="Title"
+                                        Width="*"
+                                        Binding="{Binding Path=Media.Metadata.Title}"/>
+                    <DataGridTextColumn Header="Duration"
+                                        Width="Auto"
+                                        Binding="{Binding Path=Media.Duration, Converter={StaticResource DoubleSecondsToTimeSpanConverter}, StringFormat=mm\\:ss}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Column="1"
+                        Grid.Row="2"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical">
+                <Button Style="{StaticResource AddImageVector}"
+                        Command="{Binding AddCommand}" />
+                <Button Style="{StaticResource RemoveImageVector}" 
+                        CommandParameter="{Binding ElementName=QueueItemsGrid, Path=SelectedItems}"
+                        Command="{Binding RemoveQueueCommand}"/>
+                <Button Margin="0,15,0,0"
+                        Style="{StaticResource UpImageVector}" 
+                        CommandParameter="{Binding ElementName=QueueItemsGrid, Path=SelectedItems}"
+                        Command="{Binding UpQueueCommand}" />
+                <Button Margin="0,5,0,0"
+                        Style="{StaticResource DownImageVector}" 
+                        CommandParameter="{Binding ElementName=QueueItemsGrid, Path=SelectedItems}"
+                        Command="{Binding DownQueueCommand}" />
+                <Button Margin="0,15,0,0"
+                        Style="{StaticResource ShuffleImageVector}"
+                        Command="{Binding ShuffleQueueCommand}" />
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+
+</Window>
