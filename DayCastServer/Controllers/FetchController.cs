@@ -10,7 +10,7 @@ namespace DayCastServer.Controllers
 
         public FetchController(IConfiguration configuration) => _Configuration = configuration;
 
-        [HttpGet("{*path}")]
+        [HttpGet("fetch/{*path}")]
         public IActionResult FetchFile(string path)
         {
             FileInfo file = new FileInfo(System.Uri.UnescapeDataString(path));

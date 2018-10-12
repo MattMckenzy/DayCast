@@ -260,6 +260,8 @@ namespace DayCastClient
         public CastInterface()
         {
             DayCastServer.TryLaunchServer(LocalIPAddress, LocalHostPort);
+            DayCastServer.ServerQueueReception += DayCastServer_ServerQueueReception;
+            DayCastServer.PollServer(HostAddress);
 
             MediaSender.GetChannel<IMediaChannel>().StatusChanged += MediaChannelStatusChanged;
             MediaSender.GetChannel<IMediaChannel>().QueueStatusChanged += QueueStatusChanged;
@@ -325,43 +327,48 @@ namespace DayCastClient
         public RelayCommand PlayCommand { get; private set; }
         public async Task PlayAsync()
         {
-            await SendChannelCommandAsync<IMediaChannel>(!IsInitialized || IsStopped,
-                async c =>
-                {
-                    if (insertingItems.Count > 0 && await ConnectAsync())
+            try
+            {
+                await SendChannelCommandAsync<IMediaChannel>(!IsInitialized || IsStopped,
+                    async c =>
                     {
-                        ISender sender = MediaSender;
-                        IMediaChannel mediaChannel = sender.GetChannel<IMediaChannel>();
-                        await sender.LaunchAsync(mediaChannel);
+                        if (insertingItems.Count > 0 && await ConnectAsync())
+                        {
+                            ISender sender = MediaSender;
+                            IMediaChannel mediaChannel = sender.GetChannel<IMediaChannel>();
+                            await sender.LaunchAsync(mediaChannel);
 
-                        Queue<QueueItem> itemsQueue = new Queue<QueueItem>(insertingItems);
+                            Queue<QueueItem> itemsQueue = new Queue<QueueItem>(insertingItems);
 
-                        await mediaChannel.QueueLoadAsync(RepeatMode.RepeatOff, itemsQueue.DequeueChunk(20).ToArray());
+                            await mediaChannel.QueueLoadAsync(RepeatMode.RepeatOff, itemsQueue.DequeueChunk(20).ToArray());
 
-                        await RefreshQueueAsync();
+                            await RefreshQueueAsync();
 
-                        while (itemsQueue.Count > 0)
-                            await mediaChannel.QueueInsertAsync(itemsQueue.DequeueChunk(20).ToArray());
+                            while (itemsQueue.Count > 0)
+                                await mediaChannel.QueueInsertAsync(itemsQueue.DequeueChunk(20).ToArray());
 
-                        insertingItems.Clear();
+                            insertingItems.Clear();
 
-                        IsInitialized = true;
-                    }
-                },
-                async c =>
-                {
-                    if (insertingItems.Count > 0)
+                            IsInitialized = true;
+                        }
+                    },
+                    async c =>
                     {
-                        Queue<QueueItem> itemsQueue = new Queue<QueueItem>(insertingItems);
+                        if (insertingItems.Count > 0)
+                        {
+                            Queue<QueueItem> itemsQueue = new Queue<QueueItem>(insertingItems);
 
-                        while (itemsQueue.Count > 0)
-                            await MediaSender.GetChannel<IMediaChannel>().QueueInsertAsync(itemsQueue.DequeueChunk(20).ToArray());
-                        
-                        insertingItems.Clear();
-                    }
+                            while (itemsQueue.Count > 0)
+                                await MediaSender.GetChannel<IMediaChannel>().QueueInsertAsync(itemsQueue.DequeueChunk(20).ToArray());
 
-                    await c.PlayAsync();
-                });
+                            insertingItems.Clear();
+                        }
+
+                        await c.PlayAsync();
+                    });
+            }
+            catch
+            { }
         }
         public bool CanPlay() => AreButtonsEnabled;
 
@@ -522,13 +529,12 @@ namespace DayCastClient
 
                 if (currentDirectory.Exists)
                 {
-                    if (currentDirectory.Exists)
-                        foreach (FileInfo file in currentDirectory
-                            .EnumerateFileSystemInfos("*.mp4", SearchOption.AllDirectories)
-                            .OrderBy(f => f.LastWriteTime))
-                        {
-                            insertingItems.Add(FileToQueueItem(file));
-                        }
+                    foreach (FileInfo file in currentDirectory
+                        .EnumerateFileSystemInfos("*.mp4", SearchOption.AllDirectories)
+                        .OrderBy(f => f.LastWriteTime))
+                    {
+                        insertingItems.Add(FileToQueueItem(file));
+                    }
                 }
 
                 await PlayAsync();
@@ -551,15 +557,14 @@ namespace DayCastClient
                 if (currentDirectory.Exists)
                 {
                     DateTime minimumDate = DateTime.Today;
-
-                    if (currentDirectory.Exists)
-                        foreach (FileInfo file in currentDirectory
-                            .EnumerateFileSystemInfos("*.mp4", SearchOption.AllDirectories)
-                            .Where(f => f.LastWriteTime > minimumDate)
-                            .OrderBy(f => f.LastWriteTime))
-                        {
-                            insertingItems.Add(FileToQueueItem(file));
-                        }
+                    
+                    foreach (FileInfo file in currentDirectory
+                        .EnumerateFileSystemInfos("*.mp4", SearchOption.AllDirectories)
+                        .Where(f => f.LastWriteTime > minimumDate)
+                        .OrderBy(f => f.LastWriteTime))
+                    {
+                        insertingItems.Add(FileToQueueItem(file));
+                    }
                 }
 
                 await PlayAsync();
@@ -628,7 +633,7 @@ namespace DayCastClient
 
             if (new string[] { "PLAYING", "BUFFERING", "PAUSED" }.Contains(playerState))
                 IsInitialized = true;
-            else if (new string[] { "CANCELLED", "FINISHED", "ERROR" }.Contains(status.IdleReason))
+            else if (new string[] { "CANCELLED", "FINISHED", "ERROR" }.Contains(status?.IdleReason))
             {
                 IsInitialized = false;
                 Queue = new ObservableCollection<QueueItem>();
@@ -714,8 +719,17 @@ namespace DayCastClient
             }
         }
 
-        private void Queue_Changed(object sender, NotifyCollectionChangedEventArgs e)
+        private async void DayCastServer_ServerQueueReception(object sender, DayCastServer.ServerQueueReceptionEventArgs e)
         {
+            foreach (string itemPath in e.ReceivedQueueItemPaths)
+            {
+                FileInfo file = new FileInfo(itemPath);
+                if (file.Exists)
+                    insertingItems.Add(FileToQueueItem(file));
+            }
+            
+            if (insertingItems.Count() > 0)
+                await PlayAsync();
         }
 
         private void SeekTimer_Tick(object sender, EventArgs e)
@@ -754,7 +768,7 @@ namespace DayCastClient
             {
                 Media = new MediaInformation()
                 {
-                    ContentId = $"{HostAddress}/{Uri.EscapeDataString(fileInfo.FullName)}",
+                    ContentId = $"{HostAddress}/fetch/{Uri.EscapeDataString(fileInfo.FullName)}",
                     Metadata = new MovieMetadata()
                     {
                         Title = Path.GetFileNameWithoutExtension(fileInfo.Name)
@@ -782,7 +796,7 @@ namespace DayCastClient
                         TrackId = 1,
                         Language = "en-US",
                         Name = "English",
-                        TrackContentId = $"{HostAddress}/{Uri.EscapeDataString(currentSubtitleFile.FullName)}"
+                        TrackContentId = $"{HostAddress}/fetch/{Uri.EscapeDataString(currentSubtitleFile.FullName)}"
                     }
                 };
 

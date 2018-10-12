@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <StartupObject></StartupObject>
+    <StartupObject>DayCastServer.Program</StartupObject>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
   </ItemGroup>
 
 </Project>

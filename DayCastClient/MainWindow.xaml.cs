@@ -103,8 +103,8 @@ namespace DayCastClient
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             NotifyIcon.Visible = false;
-            Settings.Default.Save();
             DayCastServer.TryStopServer();
+            Settings.Default.Save();
         }
         
         private void Window_StateChanged(object sender, EventArgs e)
@@ -160,22 +160,22 @@ namespace DayCastClient
         }
     }
 
-    public class DoubleSecondsToTimeSpanConverter : IValueConverter
+    public class DoubleSecondsToTimeStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (typeof(double) == value?.GetType())
-                return TimeSpan.FromSeconds((double)value);
+            {
+                TimeSpan span = TimeSpan.FromSeconds((double)value);
+                return $"{(int)span.TotalMinutes:D2}:{span.Seconds:D2}";
+            }
             else
                 return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (typeof(TimeSpan) == value?.GetType())
-                return ((TimeSpan)value).TotalSeconds;
-            else
-                return 0;
+            throw new NotImplementedException();
         }
     }
 

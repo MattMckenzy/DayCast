@@ -52,5 +52,17 @@ namespace DayCastClient.Properties {
                 return ((string)(this["LocalHostIP"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int ServerProcessId {
+            get {
+                return ((int)(this["ServerProcessId"]));
+            }
+            set {
+                this["ServerProcessId"] = value;
+            }
+        }
     }
 }
