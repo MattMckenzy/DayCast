@@ -1,10 +1,14 @@
 # DayCast
+
 A Windows-based Google casting application.
 
 # Description
+
 This application will let you cast any *.mp4 file from your home network to any Google device, such as a Chromecast or Google Home.
 
-Features include queueing up files, changing playback rate and full reconnection if closed.
+Features include queueing up files, changing playback rate and full reconnection if closed. 
+
+The local DayCastServer config file can be updated for a specific local IP address and Port (default being 5121). The server also supports an HTTP action to enqueue files or folders, with an optional minimum date for, useful for automation or smart home integration! (i.e. http://192.168.0.101:5121/D%3A%5CHomeSec%5Cvideo%5CIPC-LivingRoom%5C2_2018-09-09_17-03-56.mp4). Have a look at DayCastServer's QueueControlller.cs if you want to see all of it's functionality.
 
 Feel free to fork the project and send me a pull request if you have any improvements!
 
